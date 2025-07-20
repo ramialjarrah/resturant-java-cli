@@ -1,7 +1,7 @@
 package io.progressoft.order.util;
 
-import io.progressoft.order.model.Order;
-import io.progressoft.order.model.OrderItem;
+import io.progressoft.order.service.domain.Order;
+import io.progressoft.order.service.domain.OrderItem;
 
 public final  class InvoicePrinter {
 
@@ -13,7 +13,7 @@ public final  class InvoicePrinter {
         System.out.println("Order ID: " + order.getOrderId());
 
         for(OrderItem item : order.getItems()){
-            System.out.println("- " + item.getItem().getName() +" - "+ item.getItem().getPrice());
+            System.out.println("- " + item.getMenuItem().name() +" - "+ item.getMenuItem().price() + " - Quantity: " + item.getQuantity());
         }
 
         System.out.println("Total Amount: " + order.getTotalAmount());

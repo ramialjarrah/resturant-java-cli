@@ -1,32 +1,43 @@
 package io.progressoft;
 
-import io.progressoft.order.model.MenuItem;
+import io.progressoft.menu.Repository.MenuRepository;
+import io.progressoft.menu.Repository.MenuRepositoryImpl;
+import io.progressoft.menu.service.MenuItem;
+import io.progressoft.menu.service.MenuService;
+import io.progressoft.menu.service.MenuServiceImpl;
 import io.progressoft.order.repository.OrderRepository;
 import io.progressoft.order.repository.OrderRepositoryImpl;
 import io.progressoft.order.service.OrderService;
 import io.progressoft.order.service.OrderServiceImpl;
+import io.progressoft.order.service.domain.OrderItem;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.UUID;
+
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     OrderRepository orderRepository = new OrderRepositoryImpl();
-
     OrderService orderService = new OrderServiceImpl(orderRepository);
+
+    MenuRepository menuRepository = new MenuRepositoryImpl();
+    MenuService menuService = new MenuServiceImpl(menuRepository);
 
     Scanner input = new Scanner(System.in);
 
     public static void main(String[] args) {
         Main main = new Main();
-        main.start();
+//        main.start();
+
+        String x = "Hi there";
+        if (isBlank(x)) {
+
+        }
     }
 
     void start() {
-
 
 
         while (true) {
@@ -71,25 +82,41 @@ public class Main {
     }
 
     private void chooseItems() {
-        List<Integer> itemNumber = new ArrayList<>();
+        List<OrderItem> chosenItems = new ArrayList<OrderItem>();
         int choice;
         do {
             System.out.println("Enter the Item you want to add (0 to finish): ");
             choice = input.nextInt();
-            itemNumber.add(choice);
-        } while (choice!= 0);
+            if(choice == 0)
+                break;
+            MenuItem menuItem = menuService.findMenuItemById(choice);
 
-        UUID orderID = orderService.createOrder(itemNumber);
+            boolean added = false;
+            for (OrderItem orderItem : chosenItems) {
+                if (orderItem.getMenuItem().equals(menuItem)) {
+                    orderItem.setQuantity(orderItem.getQuantity() + 1);
+                    added = true;
+                }
+            }
 
-        System.out.println("Order created with ID: " + orderID);
+            if (!added) {
+                chosenItems.add(new OrderItem(menuItem, 1));
+            }
 
+        } while (true);
+
+        String uuid = orderService.createOrder(chosenItems);
+
+        System.out.println("Order created: " + uuid);
     }
 
-    private static void showMenu() {
-        List<MenuItem> menuItems = MenuItem.getMenu();
+    private void showMenu() {
+
+        List<MenuItem> menuItems = menuService.getMenuItems();
         System.out.println("Menu:");
         for (MenuItem menuItem : menuItems) {
-            System.out.println(menuItem.toString());
+            System.out.println(menuItem);
         }
+
     }
 }
