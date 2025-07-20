@@ -1,6 +1,6 @@
 package io.progressoft.order.repository;
 
-import io.progressoft.order.model.Order;
+import io.progressoft.order.service.domain.Order;
 
 import java.util.Optional;
 import java.util.UUID;
