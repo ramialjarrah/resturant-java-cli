@@ -1,9 +1,16 @@
 package io.progressoft.order.service;
 
-import io.progressoft.order.service.domain.OrderDomain;
+import io.progressoft.order.model.OrderStatus;
 
 import java.util.List;
+import java.util.UUID;
+
 
 public interface OrderService {
-    List<OrderDomain> getOrders();
+
+    UUID createOrder(List<Integer> itemNumbers);
+    OrderStatus checkOrderStatus(UUID orderId);
+    void updateOrderStatus(UUID orderId, OrderStatus newStatus);
+    void generateInvoice(UUID orderId);
+
 }
