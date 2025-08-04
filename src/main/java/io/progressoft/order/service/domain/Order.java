@@ -1,6 +1,8 @@
 package io.progressoft.order.service.domain;
 
 import io.progressoft.order.service.domain.embedded.OrderStatus;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import java.math.BigDecimal;
 
@@ -8,11 +10,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class Order {
-    private final UUID orderId;
+    private final String orderId;
     private final List<OrderItem> items;
     private OrderStatus status;
 
-    public Order(UUID uuid, List<OrderItem> items, OrderStatus status) {
+    public Order(String uuid, List<OrderItem> items, OrderStatus status) {
         this.orderId = uuid;
         this.items = items;
         this.status = status;
@@ -34,7 +36,7 @@ public class Order {
         return items;
     }
 
-    public UUID getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 

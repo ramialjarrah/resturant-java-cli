@@ -10,8 +10,11 @@ import java.util.UUID;
 public interface OrderService {
 
     String createOrder(List<OrderItem> orderItems);
+
     OrderStatus checkOrderStatus(UUID orderId);
+
     void updateOrderStatus(UUID orderId, OrderStatus newStatus);
+
     void generateInvoice(UUID orderId);
 
 }
